@@ -8,6 +8,7 @@ public class BookingEntity
     [Key]
     public int Id { get; set; }
     public int EventId { get; set; }
+    public int PackageId { get; set; }
     public int TicketQuantity { get; set; }
 
     [Column(TypeName = "decimal(18,2)")]

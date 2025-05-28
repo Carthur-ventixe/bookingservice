@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WebApi;
 using WebApi.Data.Contexts;
 using WebApi.Data.Repositories;
 using WebApi.Services;
@@ -6,6 +7,11 @@ using WebApi.Services;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+
+builder.Services.AddGrpcClient<EventContract.EventContractClient>(x =>
+{
+    x.Address = new Uri("https://localhost:7016");
+});
 
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("BookingsDb")));
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();

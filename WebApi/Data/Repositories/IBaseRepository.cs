@@ -10,5 +10,6 @@ namespace WebApi.Data.Repositories
         Task<RepositoryResult<IEnumerable<TEntity>>> GetAllAsync();
         Task<RepositoryResult<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression);
         Task<RepositoryResult> UpdateAsync(TEntity entity);
+        Task<RepositoryResult> ExistsAsync(Expression<Func<TEntity, bool>> expression);
     }
 }

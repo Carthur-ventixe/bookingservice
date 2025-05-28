@@ -72,4 +72,10 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
             return new RepositoryResult { Success = false, Error = ex.Message };
         }
     }
+
+    public async Task<RepositoryResult> ExistsAsync(Expression<Func<TEntity, bool>> expression)
+    {
+        var result = await _dbSet.AnyAsync(expression);
+        return new RepositoryResult { Success = result };
+    }
 }

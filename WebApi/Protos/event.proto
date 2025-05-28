@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option csharp_namespace = "WebApi";
+
+package event;
+
+import "google/protobuf/timestamp.proto";
+
+service EventContract {
+	rpc GetEventWithPackageById (EventByIdRequest) returns (EventReply);
+}
+
+message EventByIdRequest {
+	int32 eventId = 1;
+	int32 packageId = 2;
+}
+
+message EventReply {
+	string eventName = 1;
+	string packageName = 2;
+	google.protobuf.Timestamp eventDate = 3;
+	string location = 4;
+}
