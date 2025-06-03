@@ -10,7 +10,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddGrpcClient<EventContract.EventContractClient>(x =>
 {
-    x.Address = new Uri("https://localhost:7016");
+    x.Address = new Uri("https://ca-eventservice-ggbpdjfxatc3cmch.swedencentral-01.azurewebsites.net");
 });
 
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("BookingsDb")));
