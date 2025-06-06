@@ -1,5 +1,8 @@
 using Azure.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WebApi;
 using WebApi.Data.Contexts;
 using WebApi.Data.Repositories;
@@ -17,6 +20,28 @@ if (!string.IsNullOrEmpty(keyVaultUrl))
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secret = builder.Configuration["JwtSecret"];
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret!))
+        };
+    });
 
 builder.Services.AddGrpcClient<EventContract.EventContractClient>(x =>
 {
